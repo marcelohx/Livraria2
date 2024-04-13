@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Livraria2
+namespace ConsoleApp1
 {
-    class Reserva
+    class ControlReserva
     {
-        private long codigo;
-        
     }
 }

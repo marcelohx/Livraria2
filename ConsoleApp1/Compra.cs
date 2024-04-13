@@ -16,8 +16,8 @@ namespace Livraria2
         private long CPF;
         private long codigoCompra;
         private double precoCompra;
+        private double precoTotal;
         private int quantidadeCompra;
-
         public Compra()
         {
             model = new Livro();
@@ -25,7 +25,9 @@ namespace Livraria2
             ModificarCPFCompra = 0;
             ModificarCodigoCompra = 0;
             ModificarPrecoCompra = 0;
+            ModificarPrecoTotal = 0;
             ModificarQuantidadeCompra = 0;
+
         }//Fim do construtor
         public string ModificarNomeCompra
         {
@@ -34,36 +36,46 @@ namespace Livraria2
         }
         public long ModificarCPFCompra
         {
-            get { return this.codigoCompra; }
-            set { this.codigoCompra = value; }
+            get { return this.CPF; }
+            set { this.CPF = value; }
         }
         public long ModificarCodigoCompra
         {
             get { return this.codigoCompra; }
             set { this.codigoCompra = value; }
         }
-
         public double ModificarPrecoCompra
         {
             get { return this.precoCompra; }
             set { this.precoCompra = value; }
         }
-
+        public double ModificarPrecoTotal
+        {
+            get { return this.precoTotal; }
+            set { this.precoTotal = value;}
+        }
         public int ModificarQuantidadeCompra
         {
             get { return this.quantidadeCompra; }
             set { this.quantidadeCompra = value; }
         }
-
         public void CadastrarCompra(string nome, long CPF, long codigoCompra, double precoCompra, int quantidadeCompra)
         {
-            ModificarNomeCompra = nome;
-            ModificarCPFCompra = CPF;
-            ModificarCodigoCompra = codigoCompra;
-            ModificarPrecoCompra = precoCompra;
-            ModificarQuantidadeCompra = quantidadeCompra;
-        }//Fim do metodo
+            if (ConsultarQtde(codigoCompra) > quantidadeCompra)
+            {
+                ModificarNomeCompra = nome;
+                ModificarCPFCompra = CPF;
+                ModificarCodigoCompra = codigoCompra;
+                ModificarPrecoCompra = model.ConsultarPreco(codigoCompra);
+                ModificarPrecoTotal = ModificarQuantidadeCompra * ModificarPrecoCompra;
+                ModificarQuantidadeCompra = quantidadeCompra;
+                RemoverQuantidade(codigoCompra);
+            }
+            else
+            {
 
+            }
+        }//Fim do metodo
         public string ConsultarCompra(long codigoCompra)
         {
             string consulta = "";
@@ -71,7 +83,7 @@ namespace Livraria2
             {
                 consulta = "\nNome do Cliente: " + ModificarNomeCompra +
                            "\nCPF do Cliente: " + ModificarCPFCompra +
-                           "\nPreço da Compra: " + ModificarPrecoCompra +
+                           "\nPreço da Compra: " + ModificarPrecoTotal +
                            "\nQuantidade de livros comprados: " + ModificarQuantidadeCompra;
             }
             else
@@ -80,14 +92,17 @@ namespace Livraria2
             }
             return consulta;
         }//Fim do consultar
-
-        public void CompraLivro()
+        public int ConsultarQtde(long codigoCompra)
         {
-            double ValorTotal = 0;
+            return (model.ConsultarQuantidade(codigoCompra));
+        }
 
-
-
-
+        public void RemoverQuantidade(long codigoCompra)
+        {
+            if(ModificarQuantidadeCompra > 0)
+            {
+                model.AtualizarQuantidade(codigoCompra, ConsultarQtde(codigoCompra) - ModificarQuantidadeCompra);
+            }
         }
     }
 }

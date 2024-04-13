@@ -111,6 +111,35 @@ namespace Livraria2
             }
             return consulta;
         }//Fim do metodo
+
+        public double ConsultarPreco(long codigo)
+        {
+            double consulta = 0;
+            if (ModificarCodigo == codigo)
+            {
+                consulta = ModificarPreco;
+            }
+            else
+            {
+                consulta = -1;
+            }
+            return consulta;
+        }//Fim do metodo
+
+        public int ConsultarQuantidade(long codigo)
+        {
+            int consulta = 0;
+            if (ModificarCodigo == codigo)
+            {
+                consulta = ModificarQuantidade;
+            }
+            else
+            {
+                consulta = -1;
+            }
+            return consulta;
+        }
+
         public void AtualizarTitulo(long codigo, string titulo)
         {
             if (ModificarCodigo == codigo)
