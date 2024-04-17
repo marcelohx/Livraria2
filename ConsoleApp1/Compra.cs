@@ -10,21 +10,27 @@ namespace Livraria2
 {
     class Compra
     {
-        Livro model;
+        Pessoa pes;
+        Livro liv;
         //Encapsulamento
         private string nome;
         private long CPF;
         private long codigoCompra;
-        private double precoCompra;
+        private long codigoLivro;
+        private string tituloLivro;
+        private double precoUnitario;
         private double precoTotal;
         private int quantidadeCompra;
         public Compra()
         {
-            model = new Livro();
+            pes = new Pessoa();
+            liv = new Livro();
             ModificarNomeCompra = "";
             ModificarCPFCompra = 0;
             ModificarCodigoCompra = 0;
-            ModificarPrecoCompra = 0;
+            ModificarCodigoLivro = 0;
+            ModificarTituloLivro = "";
+            ModificarPrecoUnitario = 0;
             ModificarPrecoTotal = 0;
             ModificarQuantidadeCompra = 0;
 
@@ -44,10 +50,20 @@ namespace Livraria2
             get { return this.codigoCompra; }
             set { this.codigoCompra = value; }
         }
-        public double ModificarPrecoCompra
+        public long ModificarCodigoLivro
         {
-            get { return this.precoCompra; }
-            set { this.precoCompra = value; }
+            get { return this.codigoLivro; }
+            set { this.codigoLivro = value; }
+        }
+        public string ModificarTituloLivro
+        {
+            get { return this.tituloLivro; }
+            set { this.tituloLivro = value; }
+        }
+        public double ModificarPrecoUnitario
+        {
+            get { return this.precoUnitario; }
+            set { this.precoUnitario = value; }
         }
         public double ModificarPrecoTotal
         {
@@ -59,21 +75,33 @@ namespace Livraria2
             get { return this.quantidadeCompra; }
             set { this.quantidadeCompra = value; }
         }
-        public void CadastrarCompra(string nome, long CPF, long codigoCompra, double precoCompra, int quantidadeCompra)
+        public void EfetuarCompra(long CPF, long codigoLivro, long codigoCompra, int quantidadeCompra)
         {
             if (ConsultarQtde(codigoCompra) > quantidadeCompra)
             {
-                ModificarNomeCompra = nome;
-                ModificarCPFCompra = CPF;
-                ModificarCodigoCompra = codigoCompra;
-                ModificarPrecoCompra = model.ConsultarPreco(codigoCompra);
-                ModificarPrecoTotal = ModificarQuantidadeCompra * ModificarPrecoCompra;
-                ModificarQuantidadeCompra = quantidadeCompra;
-                RemoverQuantidade(codigoCompra);
-            }
-            else
-            {
-
+                if (CPF == pes.ModificarCPF)
+                {
+                    ModificarCodigoCompra = codigoCompra;
+                    ModificarNomeCompra = pes.ModificarNome;
+                    if (codigoLivro == liv.ModificarCodigo)
+                    {
+                        ModificarTituloLivro = liv.ModificarTitulo;
+                        ModificarQuantidadeCompra = Convert.ToInt32(Console.ReadLine());
+                        ModificarPrecoUnitario = liv.ModificarPreco;
+                        ModificarPrecoTotal = ModificarQuantidadeCompra * ModificarPrecoUnitario;
+                        ModificarQuantidadeCompra = quantidadeCompra;
+                        RemoverQuantidade(codigoCompra);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Erro! O codigo informado não existe!");
+                    }
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Erro! CPF invalido, verifique os dados digitados!");
+                }
             }
         }//Fim do metodo
         public string ConsultarCompra(long codigoCompra)
@@ -94,14 +122,14 @@ namespace Livraria2
         }//Fim do consultar
         public int ConsultarQtde(long codigoCompra)
         {
-            return (model.ConsultarQuantidade(codigoCompra));
+            return (liv.ConsultarQuantidade(codigoCompra));
         }
 
         public void RemoverQuantidade(long codigoCompra)
         {
             if(ModificarQuantidadeCompra > 0)
             {
-                model.AtualizarQuantidade(codigoCompra, ConsultarQtde(codigoCompra) - ModificarQuantidadeCompra);
+                liv.AtualizarQuantidade(codigoCompra, ConsultarQtde(codigoCompra) - ModificarQuantidadeCompra);
             }
         }
     }

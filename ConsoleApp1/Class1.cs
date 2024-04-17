@@ -111,7 +111,6 @@ namespace Livraria2
             }
             return consulta;
         }//Fim do metodo
-
         public double ConsultarPreco(long codigo)
         {
             double consulta = 0;
