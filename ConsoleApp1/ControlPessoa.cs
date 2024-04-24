@@ -1,4 +1,5 @@
-﻿using Livraria2;
+﻿using ConsoleApp1;
+using Livraria2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace Livraria2
 {
     class ControlPessoa
     {
+        DAOPessoa person;
         Pessoa model;//Conectar com a classe pessoa
         private int opcao;
         public ControlPessoa()
         {
+            person = new DAOPessoa();
             model = new Pessoa();//Acesso todos os metodos da classe pessoa
             opcao = 0;
         }//Fim do construtor
@@ -71,7 +74,7 @@ namespace Livraria2
 
                     //Chamar o método cadastrar
 
-                    model.Cadastrar(CPF, nome, telefone, endereco, data, login, senha, cargo);
+                    person.Inserir(CPF, nome, telefone, endereco, data, login, senha, "Ativo", cargo);
                     break;
                 case 2:
                     Console.WriteLine("Informe o CPF que deseja consultar: ");

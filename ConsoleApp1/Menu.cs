@@ -10,12 +10,14 @@ namespace Livraria2
 {
     class Menu
     {
+        
         ControlPessoa controlePessoa;
         ControlLivro controleLivro;
         ControlCompra controleCompra;
         public int opcao;
         public Menu()
         {
+            
             controlePessoa = new ControlPessoa();
             controleLivro = new ControlLivro();
             controleCompra = new ControlCompra();
@@ -37,6 +39,7 @@ namespace Livraria2
 
         public void OperacaoMenu()
         {
+
             do
             {
                 EscolherControl();//Chamar o texto do menu
