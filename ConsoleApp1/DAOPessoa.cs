@@ -29,7 +29,7 @@ namespace ConsoleApp1
         //Construtor
         public DAOPessoa()
         {
-            conexao = new MySqlConnection("server=localhost;DataBase=livrariaTI20N;Uid=root;Password=");
+            conexao = new MySqlConnection("server=localhost;DataBase=livrariaTI20N;Uid=root;Password=;Convert Zero DateTime=True");
             try
             {
                 conexao.Open();//Abrir a conexão
@@ -46,9 +46,13 @@ namespace ConsoleApp1
         {
             try
             {
+                MySqlParameter parameter = new MySqlParameter();
+                parameter.ParameterName = "@Date";
+                parameter.MySqlDbType = MySqlDbType.Date;
+                parameter.Value = dtNascimento.Year + "-" + dtNascimento.Month + "-" + dtNascimento.Day;
                 //Declarei as variaveis e preparei o comando
                 dados = "('" + CPF + "','" + nome + "','" + telefone + "','" + endereco + "','"
-                        + dtNascimento + "','" + login + "','" + senha + "','" + situacao + "','" + posicao + "')";
+                        + parameter.Value + "','" + login + "','" + senha + "','" + situacao + "','" + posicao + "')";
                 comando = $"Insert into pessoa values {dados}";
                 //Engatilhar a inserçao do banco
                 MySqlCommand sql = new MySqlCommand(comando, conexao);
@@ -64,7 +68,6 @@ namespace ConsoleApp1
         public void PreencherVetor()
         {
             string query = "select * from pessoa";// coletar os dados do banco
-
             //Instanciar
             CPF = new long[100];
             nome = new string[100];
@@ -75,7 +78,6 @@ namespace ConsoleApp1
             senha = new string[100];
             situacao = new string[100];
             posicao = new string[100];
-
             //preencher
             for(i = 0; i<100; i++)
             {
@@ -89,12 +91,10 @@ namespace ConsoleApp1
                 situacao[i] = "";
                 posicao[i] = "";
             }//Fim do for
-
             //preparar comando do select
             MySqlCommand coletar = new MySqlCommand(query, conexao);
             //Leitura do banco de dados
             MySqlDataReader leitura = coletar.ExecuteReader();
-
             i = 0;
             while (leitura.Read())
             {
@@ -102,7 +102,15 @@ namespace ConsoleApp1
                 nome[i] = leitura["nome"] + "";
                 telefone[i] = leitura["telefone"] + "";
                 endereco[i] = leitura["endereco"] + "";
+                //Convertendo para o padrao dia/mes/ano
+                MySqlParameter parameter = new MySqlParameter();
+                parameter.ParameterName = "@Date";
+                parameter.MySqlDbType = MySqlDbType.Date;
+                parameter.Value = Convert.ToDateTime(leitura["dtNascimento"]).Day   + "/" +
+                                  Convert.ToDateTime(leitura["dtNascimento"]).Month + "/" +
+                                  Convert.ToDateTime(leitura["dtNascimento"]).Year;
                 dtNascimento[i] = Convert.ToDateTime(leitura["dtNascimento"]);
+
                 login[i] = leitura["login"] + "";
                 senha[i] = leitura["senha"] + "";
                 situacao[i] = leitura["situacao"] + "";
@@ -116,9 +124,9 @@ namespace ConsoleApp1
         {
             PreencherVetor();//Preencher vetores
             msg = "";
-            for(i =0; i < contador; i++)
+            for(i = 0; i < contador; i++)
             {
-                msg += "CPF: " + CPF[i] +
+                msg += "\nCPF: " + CPF[i] +
                        ", nome: " + nome[i] +
                        ", telefone: " + telefone[i] +
                        ", endereço: " + endereco[i] +
@@ -130,5 +138,72 @@ namespace ConsoleApp1
             }//Fim do for
             return msg;
         }//fim do metodo
+        public string ConsultarIndividual(long codCPF)
+        {
+            PreencherVetor();
+            msg = "";
+            for(i=0; i < contador; i++)
+            {
+                if (CPF[i] == codCPF)
+                {
+                    msg = "CPF: " + CPF[i] +
+                          ", nome: " + nome[i] +
+                          ", telefone: " + telefone[i] +
+                          ", endereço: " + endereco[i] +
+                          ", nascimento: " + dtNascimento[i] +
+                          ", login: " + login[i] +
+                          ", senha: " + senha[i] +
+                          ", situação: " + situacao[i] +
+                          ", cargo: " + posicao[i];
+                    return msg;
+                }//fim do if                
+            }//fim do for
+            return "Código não encontrado!";
+        }//Fim do consultar indiv.
+        public string Atualizar(long codCPF, string campo, string novoDado)
+        {
+            try
+            {
+                string query = "update pessoa set " + campo + " = '" + novoDado + "' where CPF = '" + codCPF + "'";
+                //Executar comando
+                MySqlCommand sql = new MySqlCommand(query, conexao);
+                string resultado = "" + sql.ExecuteNonQuery();
+                return resultado + "Linha afetada!";
+            }//fim do try
+            catch(Exception ex)
+            {
+                return "Algo deu errado!\n\n\n" + ex;
+            }//fim do catch
+        }//Fim do Atualizar
+        public string Atualizar(long codCPF, string campo, DateTime novoDado)
+        {
+            try
+            {
+                string query = "update pessoa set " + campo + " = '" + novoDado + "' where CPF = '" + codCPF + "'";
+                //Executar comando
+                MySqlCommand sql = new MySqlCommand(query, conexao);
+                string resultado = "" + sql.ExecuteNonQuery();
+                return resultado + "Linha afetada!";
+            }//fim do try
+            catch (Exception ex)
+            {
+                return "Algo deu errado!\n\n\n" + ex;
+            }//fim do catch
+        }//Fim do Atualizar
+        public string Excluir(long codCPF)
+        {
+            try
+            {
+                string query = "update pessoa set situacao = 'Inativo' where CPF = '" + codCPF + "'";
+                //Executar comando
+                MySqlCommand sql = new MySqlCommand(query, conexao);
+                string resultado = "" + sql.ExecuteNonQuery();
+                return resultado + "Linha afetada!";
+            }//fim do try
+            catch (Exception ex)
+            {
+                return "Algo deu errado!\n\n\n" + ex;
+            }//fim do catch
+        }//Fim do Atualizar
     }//Fim da classe
 }//FIm do projeto

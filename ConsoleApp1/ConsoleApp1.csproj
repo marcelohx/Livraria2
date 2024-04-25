@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAOLivro.cs" />
     <Compile Include="Livro.cs" />
     <Compile Include="Compra.cs" />
     <Compile Include="ControlCompra.cs" />
