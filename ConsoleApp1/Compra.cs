@@ -13,9 +13,9 @@ namespace Livraria2
         Pessoa pes;
         Livro liv;
         //Encapsulamento
-        private string nome;
-        private long CPF;
         private long codigoCompra;
+        private long CPF;
+        private string nome;
         private long codigoLivro;
         private string tituloLivro;
         private double precoUnitario;
@@ -25,9 +25,9 @@ namespace Livraria2
         {
             pes = new Pessoa();
             liv = new Livro();
-            ModificarNomeCompra = "";
-            ModificarCPFCompra = 0;
             ModificarCodigoCompra = 0;
+            ModificarCPFCompra = 0;
+            ModificarNomeCompra = "";
             ModificarCodigoLivro = 0;
             ModificarTituloLivro = "";
             ModificarPrecoUnitario = 0;
@@ -35,20 +35,20 @@ namespace Livraria2
             ModificarQuantidadeCompra = 0;
 
         }//Fim do construtor
-        public string ModificarNomeCompra
+        public long ModificarCodigoCompra
         {
-            get { return this.nome; }
-            set { this.nome = value; }
+            get { return this.codigoCompra; }
+            set { this.codigoCompra = value; }
         }
         public long ModificarCPFCompra
         {
             get { return this.CPF; }
             set { this.CPF = value; }
         }
-        public long ModificarCodigoCompra
+        public string ModificarNomeCompra
         {
-            get { return this.codigoCompra; }
-            set { this.codigoCompra = value; }
+            get { return this.nome; }
+            set { this.nome = value; }
         }
         public long ModificarCodigoLivro
         {

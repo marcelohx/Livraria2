@@ -146,7 +146,7 @@ namespace ConsoleApp1
             {
                 if (CPF[i] == codCPF)
                 {
-                    msg = "CPF: " + CPF[i] +
+                    msg = "\nCPF: " + CPF[i] +
                           ", nome: " + nome[i] +
                           ", telefone: " + telefone[i] +
                           ", endereço: " + endereco[i] +
@@ -204,6 +204,6 @@ namespace ConsoleApp1
             {
                 return "Algo deu errado!\n\n\n" + ex;
             }//fim do catch
-        }//Fim do Atualizar
+        }//Fim do Excluir
     }//Fim da classe
 }//FIm do projeto

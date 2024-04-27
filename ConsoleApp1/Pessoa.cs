@@ -16,7 +16,7 @@ namespace Livraria2
         private DateTime dtNascimento;
         private string login;
         private string senha;
-        private string situacao;//Ativo ou inativo
+        private string situacao;//Ativo ou inativo 
         private string posicao;//Atendente ou Administrador ou Cliente
 
         //Método construtor = para instanciar as variaveis

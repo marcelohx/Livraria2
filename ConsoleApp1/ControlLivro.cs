@@ -1,4 +1,5 @@
-﻿using Livraria2;
+﻿using ConsoleApp1;
+using Livraria2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace Livraria2
 {
     class ControlLivro
     {
+        DAOLivro book;
         Livro model;//Conectar com a classe livro
         private int opcao;
         public ControlLivro()
         {
+            book = new DAOLivro();
             model = new Livro();
             opcao = 0;
         }//Fim do construtor
@@ -26,16 +29,17 @@ namespace Livraria2
             Console.WriteLine("Menu - Livro" +
                               "\nEscolha uma das opções abaixo: " +
                               "\n1. Cadastrar Livro" +
-                              "\n2. Consultar Livro" +
-                              "\n3. Atualizar Titulo" +
-                              "\n4. Atualizar Autor" +
-                              "\n5. Atualizar Editora" +
-                              "\n6. Atualizar Genero" +
-                              "\n7. Atualizar ISBN" +
-                              "\n8. Atualizar Situação" +
-                              "\n9. Atualizar Quantidade" +
-                              "\n10. Atualizar Preço" +
-                              "\n11. Excluir");
+                              "\n2. Consultar Todos os Livros" +
+                              "\n3. Consultar Livros Individual" +
+                              "\n4. Atualizar Titulo" +
+                              "\n5. Atualizar Autor" +
+                              "\n6. Atualizar Editora" +
+                              "\n7. Atualizar Genero" +
+                              "\n8. Atualizar ISBN" +
+                              "\n9. Atualizar Situação" +
+                              "\n10. Atualizar Quantidade" +
+                              "\n11. Atualizar Preço" +
+                              "\n12. Excluir");
             ModificarOpcao = Convert.ToInt32(Console.ReadLine());
         }//Fim do Menu
         public void Operacao()
@@ -70,67 +74,62 @@ namespace Livraria2
 
                     //chamar o metodo cadastrar
 
-                    model.CadastrarLivro(codigo, titulo, autor, editora, genero, ISBN, quantidade, preco);
+                    book.InserirLivro(codigo, titulo, autor, editora, genero, ISBN, "ativo", quantidade, preco);
                     break;
                 case 2:
-                    Console.WriteLine("Informe o Codigo do Livro que deseja consultar: ");
-                    codigo = Convert.ToInt64(Console.ReadLine());
                     //Mostrar o ConsultarLivro
-                    Console.WriteLine(model.ConsultarLivro(codigo));
+                    Console.WriteLine(book.ConsultarTodosLivros());
                     break;
                 case 3:
+                    Console.WriteLine("Informe o Codigo do Livro que deseja consultar: ");
+                    codigo = Convert.ToInt64(Console.ReadLine());
+
+                    Console.WriteLine(book.ConsultarLivroIndividual(codigo));
+                    break;
+                case 4:
                     Console.WriteLine("Informe o Codigo do Livro: ");
                     codigo = Convert.ToInt64(Console.ReadLine());
 
                     Console.WriteLine("Insira o novo titulo do Livro: ");
                     titulo = Console.ReadLine();
 
-                    model.AtualizarTitulo(codigo, titulo);
+                    Console.WriteLine(book.Atualizar(codigo, "titulo", titulo));
                     break;
-                case 4:
+                case 5:
                     Console.WriteLine("Informe o Codigo do Livro: ");
                     codigo = Convert.ToInt64(Console.ReadLine());
 
                     Console.WriteLine("Insira o novo Autor do Livro: ");
                     autor = Console.ReadLine();
 
-                    model.AtualizarAutor(codigo, autor);
+                    Console.WriteLine(book.Atualizar(codigo, "autor", autor));
                     break;
-                case 5:
+                case 6:
                     Console.WriteLine("Informe o Codigo do Livro: ");
                     codigo = Convert.ToInt64(Console.ReadLine());
 
                     Console.WriteLine("Insira a nova editora do Livro: ");
                     editora = Console.ReadLine();
 
-                    model.AtualizarEditora(codigo, editora);
+                    Console.WriteLine(book.Atualizar(codigo, "editora", editora));
                     break;
-                case 6:
+                case 7:
                     Console.WriteLine("Informe o Codigo do Livro: ");
                     codigo = Convert.ToInt64(Console.ReadLine());
 
                     Console.WriteLine("Insira a nova genero do Livro: ");
                     genero = Console.ReadLine();
 
-                    model.AtualizarGenero(codigo, genero);
+                    Console.WriteLine(book.Atualizar(codigo, "genero", genero));
                     break;
-                case 7:
+                case 8:
                     Console.WriteLine("Informe o Codigo do Livro: ");
                     codigo = Convert.ToInt64(Console.ReadLine());
 
                     Console.WriteLine("Insira o novo ISBN do Livro: ");
                     ISBN = Convert.ToInt64(Console.ReadLine());
 
-                    model.AtualizarISBN(codigo, ISBN);
-                    break;
-                case 8:
-                    Console.WriteLine("Informe o Codigo do Livro: ");
-                    codigo = Convert.ToInt64(Console.ReadLine());
-
-                    Console.WriteLine("Insira a nova editora do Livro: ");
-                    editora = Console.ReadLine();
-
-                    model.AtualizarEditora(codigo, editora);
+                    Console.WriteLine(book.Atualizar(codigo, "ISBN", ISBN));
                     break;
                 case 9:
                     Console.WriteLine("Informe o Codigo do Livro: ");
@@ -139,7 +138,7 @@ namespace Livraria2
                     Console.WriteLine("Insira a nova quantidade que possui do Livro: ");
                     quantidade = Convert.ToInt32(Console.ReadLine());
 
-                    model.AtualizarQuantidade(codigo, quantidade);
+                    Console.WriteLine(book.Atualizar(codigo, "quantidade", quantidade));
                     break;
                 case 10:
                     Console.WriteLine("Informe o Codigo do Livro: ");
@@ -148,13 +147,13 @@ namespace Livraria2
                     Console.WriteLine("Insira o novo valor do preço do Livro: ");
                     preco = Convert.ToDouble(Console.ReadLine());
 
-                    model.AtualizarPreco(codigo, preco);
+                    Console.WriteLine(book.Atualizar(codigo, "preco", preco));
                     break;
                 case 11:
                     Console.WriteLine("Informe o Codigo do Livro: ");
                     codigo = Convert.ToInt64(Console.ReadLine());
                     //Excluir
-                    model.Excluir(codigo);
+                    book.Excluir(codigo);
                     break;
                 default:
                     Console.WriteLine("Escolha uma opção válida!");
